@@ -1,0 +1,18 @@
+{
+  "name": "tiger-discord-dyno",
+  "version": "1.0.0",
+  "description": "Discord chatbot",
+  "main": "main.js",
+  "keywords": [
+    "discord"
+  ],
+  "scripts": {
+     "start": "node tigers-sceptile.js"
+  },
+  "author": "tigergold59",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "11.3.2",
+    "tiger-script": "1.0.2"
+  }
+}
