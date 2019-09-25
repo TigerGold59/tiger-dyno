@@ -1,27 +1,35 @@
-function functionparser(message, client, Discord) {
-  //
+/* Function Structure
+
+Key
+===
+Command phrase to activate command
+
+Value
+======
+Object
+  ||
+  \/
+Object
+------
+
+"function": function with arguments message, client, Discord to
+handle the command functionality
+"restrictions": object with keys servers, channels, and users
+Each (servers, channels, users) has properties blacklist and whitelist
+which are an array of IDs that are either restricted or allowed
+(respectively) and if whitelisted IDs are listed, default is
+blacklisted for all other servers/channels/users. (coming soon)
+
+Please list the description and possible arguments in ./command-manuals.json
+
+*/
+
+function function_parser(message, client, Discord) {
 
   tiger = require("tiger-script")
 
   var commands = {
-    /*"givems": function(message, client, Discord) {
-    // Syntax: %givems <usertag> <amount>
-      file = require("./m.json")
-      if (message.author.id == "424564535030972426") {
-        parts = message.content.split(' ')
-        var name = parts[1]
-        var points = parts[2]
-        if (!file[name]) {
-          tiger.addJSON("./m.json", name, 0)
-        }
-        tiger.addJSON("./m.json", name, file[name] + Number(points))
-        message.channel.send("Fine")
-      }
-      else {
-        message.channel.send("You do not have the big permission")
-      }
-    },*/
-    "xofakind": function(message, client, Discord) {
+    "xofakind": {"function": function(message, client, Discord) {
       // Syntax: %xofakind <numberOfDice>
       function dice() {
         return (Math.floor(Math.random() * 6) + 1)
@@ -67,8 +75,8 @@ function functionparser(message, client, Discord) {
         }
       }
       message.channel.send("To roll " + num + " dice that all turn up as " + diceNumbers + " took " + (tries + 1) + " tries.")
-    },
-    "progressbar": function(message, client, Discord) {
+    }},
+    "progressbar": {"function": function(message, client, Discord) {
       // Syntax: %progressbar <name>,<starting percent>,<note>
       function createBar(percent, note) {
         var buffer = "[~"
@@ -92,8 +100,8 @@ function functionparser(message, client, Discord) {
       var note = parts[2]
       message.channel.send(createBar(startingpercent, note))
         .then(message => tiger.addJSON("./progressbars.json", name, message.id))
-    },
-    "progressbaredit": function(message, client, Discord) {
+    }},
+    "progressbaredit": {"function": function(message, client, Discord) {
       // Syntax: %proressbaredit <name,<new percent>,<note>
       function createBar(percent, note) {
         var buffer = "[~"
@@ -119,29 +127,19 @@ function functionparser(message, client, Discord) {
       var messageID = String(require("./progressbars.json")[name])
       message.channel.fetchMessage(messageID).then(bar => bar.edit(progressbar))
       console.log("Progress bar edited successfully")
-    },
-    "info": function(message, client, Discord) {
+    }},
+    "info": {"function": function(message, client, Discord) {
       // Syntax: %info
       message.channel.send("Hi! I'm TigerGold59's bot. I moderate and sometimes do cool stuff like games. Say '%commands' for commands. Oh also if you type in backwards text I'll translate it.")
-    },
-    "rolecount": function(message, client, Discord) {
+    }},
+    "rolecount": {"function": function(message, client, Discord) {
       // Syntax: %rolecount
       var roles_array = message.guild.member(message.author).roles.array()
       message.channel.send("Total roles for you (including non-jump-roles): " + String((roles_array.length - 1)))
-    },
-    "totalroles": function(message, client, Discord) {
-      // Syntax: %totalroles
-      if ((message.guild.id === "469869605570084886") === false) {
-        message.channel.send("This command is not available in this server. Here's the invite to the server you can use this in: https://discord.gg/WYVZZF4")
-        return;
-      }
-      function handleUser(user, message, client, Discord) {
-        var roles_array = message.guild.member(user).roles.array()
-        message.channel.send("Total number of jump roles: " + (roles_array.length - 7) + " (remember to give YAGPDB new jump roles to keep this count accurate)")
-      }
-      client.fetchUser('204255221017214977').then(user => handleUser(user, message, client, Discord))
-    },
-    "avatarURL": function(message, client, Discord) {
+    }},
+    /*"totalroles": function(message, client, Discord) {
+    },*/
+    "avatarURL": {"function": function(message, client, Discord) {
       // Syntax: %avatarURL
       if (message.author.avatarURL !== null) {
         message.channel.send(message.author.avatarURL)
@@ -149,28 +147,31 @@ function functionparser(message, client, Discord) {
       else {
         message.channel.send("You have a default avatar.")
       }
-    },
-    "username": function(message, client, Discord) {
+    }},
+    "username": {"function": function(message, client, Discord) {
       // Syntax: %username
       message.channel.send(message.author.username)
-    }
+    }}
   }
 
-  //
+  // Read prefix and execute command accordingly
 
+  var fs = require("fs")
+  var read = fs.readFileSync
 
-  if (message.content.indexOf("%") === 0) {
-    var command = message.content.split("%")[1]
-    var cmdname1 = command.split(" ")
-    var cmdname = cmdname1[0]
-    if (commands[cmdname]) {
-      commands[cmdname](message, client, Discord)
-      tiger.log("green", "%" + command + " executed")
+  prefix = JSON.parse(read("./config.json", 'utf8'))['prefix']
+  if (message.content.indexOf(prefix) === 0) {
+    var command = message.content.split(prefix)[1]
+    var cmdname = command.split(" ")[0]
+    var cmdobj = command[cmdname]
+    if (cmdobj["function"]) {
+      commands[cmdname]["function"](message, client, Discord)
+      tiger.log("green", prefix + command + " executed (" + message.id + ")")
     }
     else {
-      tiger.log("green", "%" + command + " is not a command")
+      tiger.log("red", prefix + command + " is not a command")
     }
   }
 }
 
-module.exports = functionparser
+module.exports = function_parser
