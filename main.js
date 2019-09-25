@@ -9,13 +9,10 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 // The token of your bot - https://discordapp.com/developers/applications/me
-<<<<<<< HEAD
 // Please create a file called token.txt in the main folder and 
 // the only contents of the file the token string.
 const token = fs.readFileSync("./token.txt", 'utf8');
-=======
-const token = '<insert token here>';
->>>>>>> b93ed7030e179a3256e1f25d8e444d7c2391cf9f
+
 
 // The ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted
