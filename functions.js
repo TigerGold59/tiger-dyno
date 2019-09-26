@@ -153,7 +153,7 @@ function function_parser(message, client, Discord) {
       // Syntax: %username
       message.channel.send(message.author.username)
     }},
-    "postlogs"; {"function": function(message, client, Discord) {
+    "postlogs": {"function": function(message, client, Discord) {
       'In development';
     }}
   }
@@ -162,21 +162,22 @@ function function_parser(message, client, Discord) {
 
   const fs = require("fs")
   const read = fs.readFile
+  const config = require("./config.json")
 
-  read("./config.json", 'utf8', function(err, prefix) {
-    if (message.content.indexOf(prefix) === 0) {
-      var command = message.content.split(prefix)[1]
-      var cmdname = command.split(" ")[0]
-      var cmdobj = command[cmdname]
-      if (cmdobj["function"]) {
-        commands[cmdname]["function"](message, client, Discord)
-        tiger.log("green", prefix + command + " executed (" + message.id + ")")
-      }
-      else {
-        tiger.log("red", prefix + command + " is not a command")
-      }
+  var prefix = config.prefix
+  if (message.content.indexOf(prefix) === 0) {
+    var command = message.content.split(prefix)[1]
+    var cmdname = command.split(" ")[0]
+    var cmdobj = commands[cmdname]
+    if (cmdobj["function"]) {
+      commands[cmdname]["function"](message, client, Discord)
+      tiger.log("green", prefix + command + " executed (" + message.id + ")")
     }
-  })
+    else {
+      tiger.log("red", prefix + command + " is not a command")
+    }
+  }
+
 }
 
 module.exports = function_parser
