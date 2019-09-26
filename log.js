@@ -4,11 +4,22 @@ function log(message) {
   var date = new Date()
   var date_string = date.getMonth() + "_" + date.getDate() + "_" +  date.getYear() + ".txt"
   if (!(fs.existsSync("./logs/" + date_string))) {
-    fs.writeFile("./logs/" + date_string, message, 'utf8')
+    fs.writeFile("./logs/" + date_string, message, 'utf8', function (err) {
+      if (err) {
+        console.log(err)
+      }
+    })
   }
   else {
     var file = fs.readFile("./logs/" + date_string, 'utf8', function(err, data) {
-      fs.writeFile("./logs/" + date_string, data + "\r\n" + message)
+      if (err) {
+        console.log(err)
+      }
+       fs.writeFile("./logs/" + date_string, data + "\r\n" + message, 'utf8', function(err) {
+         if (err) {
+           console.log(err)
+         }
+       })
     })
   }
 }
