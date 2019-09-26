@@ -1,6 +1,6 @@
 {
   "name": "tiger-discord-dyno",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Discord chatbot",
   "main": "main.js",
   "keywords": [
