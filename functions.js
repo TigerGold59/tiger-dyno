@@ -131,12 +131,12 @@ function function_parser(message, client, Discord) {
     }},
     "info": {"function": function(message, client, Discord) {
       // Syntax: %info
-      message.channel.send("Hi! I'm TigerGold59's bot. I moderate and sometimes do cool stuff like games. Say '%commands' for commands. Oh also if you type in backwards text I'll translate it.")
+      message.channel.send("TigerDyno is an in-development project that will have many useful built-in commands and be easily customizable.")
     }},
     "rolecount": {"function": function(message, client, Discord) {
       // Syntax: %rolecount
       var roles_array = message.guild.member(message.author).roles.array()
-      message.channel.send("Total roles for you (including non-jump-roles): " + String((roles_array.length - 1)))
+      message.channel.send("Total roles for you: " + String((roles_array.length - 1)))
     }},
     /*"totalroles": function(message, client, Discord) {
     },*/

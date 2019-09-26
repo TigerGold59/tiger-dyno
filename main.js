@@ -13,10 +13,8 @@ const client = new Discord.Client();
 // the only contents of the file the token string.
 const token = require("./token.json")['token'];
 
-console.log("Token is " + token)
-
 client.on('ready', () => {
-  tiger.log('green', `Tiger\'s Sceptile - Ready! Logged in as ${client.user.tag}.`);
+  tiger.log('green', `TigerDyno - Ready! Logged in as ${client.user.tag}.`);
 });
 
 // Parse message
