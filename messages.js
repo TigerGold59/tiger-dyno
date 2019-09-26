@@ -1,4 +1,4 @@
-
+'use strict';
 function processMessage(message, client, Discord) {
   // Please only use this area for non-command responses
   // such as replying to DMs.

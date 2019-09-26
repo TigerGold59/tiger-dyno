@@ -1,3 +1,4 @@
+'use strict';
 /* Function Structure
 
 Key
@@ -26,7 +27,7 @@ Please list the description and possible arguments in ./command-manuals.json
 
 function function_parser(message, client, Discord) {
 
-  tiger = require("tiger-script")
+  const tiger = require("tiger-script")
 
   var commands = {
     "xofakind": {"function": function(message, client, Discord) {
@@ -34,7 +35,7 @@ function function_parser(message, client, Discord) {
       function dice() {
         return (Math.floor(Math.random() * 6) + 1)
       }
-      parts = message.content.split(' ')
+      var parts = message.content.split(' ')
       var num = Number(parts[1])
       if (num > 11 && !(message.author.id === '424564535030972426')) {
         message.channel.send("Argument " + parts[1] + " is too high a number of dice, it would take hours for the bot to simulate this and millions of years to roll this yourself.")
@@ -91,7 +92,7 @@ function function_parser(message, client, Discord) {
         buffer += (lbuffer + spacebuffer + "~] (" + percent + "%), note: " + note)
         return buffer;
       }
-      parts = message.content.split(' ')
+      var parts = message.content.split(' ')
       parts.shift()
       parts = parts.join("")
       parts = parts.split(",")
@@ -151,27 +152,31 @@ function function_parser(message, client, Discord) {
     "username": {"function": function(message, client, Discord) {
       // Syntax: %username
       message.channel.send(message.author.username)
+    }},
+    "postlogs"; {"function": function(message, client, Discord) {
+      'In development';
     }}
   }
 
   // Read prefix and execute command accordingly
 
-  var fs = require("fs")
-  var read = fs.readFileSync
+  const fs = require("fs")
+  const read = fs.readFile
 
-  prefix = JSON.parse(read("./config.json", 'utf8'))['prefix']
-  if (message.content.indexOf(prefix) === 0) {
-    var command = message.content.split(prefix)[1]
-    var cmdname = command.split(" ")[0]
-    var cmdobj = command[cmdname]
-    if (cmdobj["function"]) {
-      commands[cmdname]["function"](message, client, Discord)
-      tiger.log("green", prefix + command + " executed (" + message.id + ")")
+  read("./config.json", 'utf8', function(err, prefix) {
+    if (message.content.indexOf(prefix) === 0) {
+      var command = message.content.split(prefix)[1]
+      var cmdname = command.split(" ")[0]
+      var cmdobj = command[cmdname]
+      if (cmdobj["function"]) {
+        commands[cmdname]["function"](message, client, Discord)
+        tiger.log("green", prefix + command + " executed (" + message.id + ")")
+      }
+      else {
+        tiger.log("red", prefix + command + " is not a command")
+      }
     }
-    else {
-      tiger.log("red", prefix + command + " is not a command")
-    }
-  }
+  })
 }
 
 module.exports = function_parser
