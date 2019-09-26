@@ -26,3 +26,8 @@ client.on('message', message => {
 
 // Log the bot in
 client.login(token);
+
+// Place outside of any other listener in your main file
+process.on("unhandledRejection", error => {
+    console.error("Unhandled promise rejection:", error);
+});
