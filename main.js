@@ -11,7 +11,9 @@ const client = new Discord.Client();
 // The token of your bot - https://discordapp.com/developers/applications/me
 // Please create a file called token.txt in the main folder and
 // the only contents of the file the token string.
-const token = fs.readFileSync("./token.txt", 'utf8');
+const token = require("./token.json")['token'];
+
+console.log("Token is " + token)
 
 client.on('ready', () => {
   tiger.log('green', `Tiger\'s Sceptile - Ready! Logged in as ${client.user.tag}.`);
@@ -27,7 +29,6 @@ client.on('message', message => {
 // Log the bot in
 client.login(token);
 
-// Place outside of any other listener in your main file
 process.on("unhandledRejection", error => {
     console.error("Unhandled promise rejection:", error);
 });
