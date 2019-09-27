@@ -16,10 +16,10 @@ restrictions: an object that qualifies whether or not an action can be performed
 {
   "restrictions": {
     "users": {
-      "blacklist": \["<not allowed user ID>"]
+      "blacklist": ["<not allowed user ID>"]
     },
     "channels": {
-      "whitelist: \[<allowed channel IDs>\]
+      "whitelist: [<allowed channel IDs>]
     }
 }
 ```
