@@ -25,6 +25,90 @@ Please list the description and possible arguments in ./command-manuals.json
 
 */
 
+function is_allowed(restrictions, message) {
+  /*
+  Restrictions format
+  object
+  |
+  --- servers
+  |   |
+  |   --- blacklist
+  |   |
+  |   --- whitelist
+  |
+  --- channels
+  |   |
+  |   --- blacklist
+  |   |
+  |   --- whitelist
+  |
+  --- users
+  |   |
+  |   --- blacklist
+  |   |
+  |   --- whitelist
+
+  */
+  if (restrictions) {
+    var is_allowed = true;
+    var server_id = String(message.guild.id);
+    var channel_id = String(message.channel.id);
+    var user_id = String(message.author.id);
+    var servers = restrictions["servers"];
+    var channels = restrictions["channels"];
+    var users = restrictions["users"];
+    if (servers) {
+      if (servers.blacklist && servers.whitelist) {
+        console.log("Invalid restrictions: servers has a whitelist and blacklist.")
+      }
+      else if (servers.whitelist) {
+        if (!servers.whitelist.includes(server_id)) {
+          is_allowed = false;
+        }
+      }
+      else if (servers.blacklist) {
+        if (servers.blacklist.includes(server_id)) {
+          is_allowed = false;
+        }
+      }
+    }
+    if (is_allowed === true && channels) {
+      if (channels.blacklist && channels.whitelist) {
+        console.log("Invalid restrictions: channels has a whitelist and blacklist.")
+      }
+      else if (channels.whitelist) {
+        if (!channels.whitelist.includes(channel_id)) {
+          is_allowed = false;
+        }
+      }
+      else if (channels.blacklist) {
+        if (channels.blacklist.includes(channel_id)) {
+          is_allowed = false;
+        }
+      }
+    }
+    if (is_allowed === true && users) {
+      if (users.blacklist && users.whitelist) {
+        console.log("Invalid restrictions: users has a whitelist and blacklist.")
+      }
+      else if (users.whitelist) {
+        if (!users.whitelist.includes(user_id)) {
+          is_allowed = false;
+        }
+      }
+      else if (users.blacklist) {
+        if (users.blacklist.includes(user_id)) {
+          is_allowed = false;
+        }
+      }
+    }
+    return is_allowed;
+  }
+  else {
+    return true;
+  }
+}
+
 function function_parser(message, client, Discord) {
 
   const tiger = require("tiger-script")
@@ -170,10 +254,15 @@ function function_parser(message, client, Discord) {
     var cmdname = command.split(" ")[0]
     var cmdobj = commands[cmdname]
     if (cmdobj) {
-      if (cmdobj["function"]) {
+      if (cmdobj["function"] && is_allowed(cmdobj["restrictions"], message)) {
         commands[cmdname]["function"](message, client, Discord)
         tiger.log("green", prefix + command + " executed (" + message.id + ")")
         var is_module_cmd = true;
+      }
+      else if (cmdobj["function"] && !(is_allowed(cmdobj["restrictions"], message))) {
+        message.channel.send("This command is restricted here.")
+        var is_module_cmd = true;
+        tiger.log("yellow", prefix + command + " was attempted and is restricted (" + message.id + ")")
       }
     }
     else {
@@ -187,13 +276,17 @@ function function_parser(message, client, Discord) {
     // Get each individual module file and check function
     let active_module_path = "./modules/" + modules[i] + "/main.js"
     let module_obj = require(active_module_path)
-    // I'll deal with "restrictions" later
     let keys = Object.keys(module_obj["functions"])
     // Check if the command run was a command from this active module
-    if (module_obj["functions"][cmdname]) {
+    if (module_obj["functions"][cmdname] && is_allowed(module_obj["restrictions"], message)) {
       tiger.log("green", "[Module " + modules[i] + "] " + prefix + command + " executed (" + message.id + ")")
       module_obj["functions"][cmdname](message, client, Discord);
       is_module_cmd = true;
+    }
+    else if (module_obj["functions"][cmdname] && !(is_allowed(module_obj["restrictions"], message))) {
+      message.channel.send("This command is restricted here.")
+      is_module_cmd = true;
+      tiger.log("yellow", "[Module " + modules[i] + "] " + prefix + command + " was attempted and is restricted (" + message.id + ")")
     }
     if (is_module_cmd === false) {
       message.channel.send("Sorry, that is not a recognized command. Please use " + prefix + "help for a list of commands.")
