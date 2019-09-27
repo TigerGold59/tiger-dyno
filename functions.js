@@ -169,12 +169,35 @@ function function_parser(message, client, Discord) {
     var command = message.content.split(prefix)[1]
     var cmdname = command.split(" ")[0]
     var cmdobj = commands[cmdname]
-    if (cmdobj["function"]) {
-      commands[cmdname]["function"](message, client, Discord)
-      tiger.log("green", prefix + command + " executed (" + message.id + ")")
+    if (cmdobj) {
+      if (cmdobj["function"]) {
+        commands[cmdname]["function"](message, client, Discord)
+        tiger.log("green", prefix + command + " executed (" + message.id + ")")
+        var is_module_cmd = true;
+      }
     }
     else {
-      tiger.log("red", prefix + command + " is not a command")
+      var is_module_cmd = false;
+    }
+  }
+
+  // Read modules
+  var modules = config["use"]
+  for (let i = 0; i < modules.length; i++) {
+    // Get each individual module file and check function
+    let active_module_path = "./modules/" + modules[i] + "/main.js"
+    let module_obj = require(active_module_path)
+    // I'll deal with "restrictions" later
+    let keys = Object.keys(module_obj["functions"])
+    // Check if the command run was a command from this active module
+    if (module_obj["functions"][cmdname]) {
+      tiger.log("green", "[Module " + modules[i] + "] " + prefix + command + " executed (" + message.id + ")")
+      module_obj["functions"][cmdname](message, client, Discord);
+      is_module_cmd = true;
+    }
+    if (is_module_cmd === false) {
+      message.channel.send("Sorry, that is not a recognized command. Please use " + prefix + "help for a list of commands.")
+      tiger.log("red", prefix + command + " is not a command (" + message.id + ")")
     }
   }
 
