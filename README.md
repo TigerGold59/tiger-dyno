@@ -11,6 +11,20 @@ Then, download the latest version of node.js and NPM, and (in this cloned folder
 Finally, run `node main.js` in this cloned folder. Your bot should be online, as long as your forked code works.
 
 ## How to add modules
-In the modules folder, add a folder with the name of your module. Then add a script to that folder called `main.js`. The script's `module.exports` should be an object with properties 'restrictions' and 'functions'. Functions should be an object with the command name as the key and the function that executes when run as the value (arguments: message, client, Discord). Restrictions should follow the normal format for a restrictions list (in comment at the top of `functions.js`). You may place other files that go with your module in the module folder, such as a database, but note that only `main.js` will be `require()`'d.
+In the modules folder, add a folder with the name of your module. Then add a script to that folder called `main.js`. The script's `module.exports` should be an object with properties 'restrictions', 'functions', and 'cmd_manual'.
+
+Functions should be an object with the command name as the key and the function that executes when run as the value (arguments: message, client, Discord).
+
+Restrictions should follow the normal format for a restrictions list (in comment at the top of `functions.js`).
+
+'cmd_manual' should be an object with the keys being the exactly the way you would use the command, but without the prefix and the arguments should be replaced with a description of the argument surrounded by <>. The value should be a string that describes what exactly the command does in as much detail as possible.
+Example:
+```
+{
+  "add <number> <number>": "Adds the two specified numbers together and gives the result.",
+  "subtract <number>, number>": "Subtracts the second number from the first number and gives the result."
+}
+```
+You may place other files that go with your module in the module folder, such as a database, but note that only `main.js` will be `require()`'d.
 
 Then, in `config.json` in the main bot folder, under the 'use' key, add the name of your module folder to the array. Your module's commands will work just like normal commands.

@@ -1,8 +1,11 @@
 {
-    "%info": "Bot gives brief explanation of its designed purpose.",
-    "%commands": "Links to this always-updating hastebin.",
-    "%xofakind <number of dice>": "Simulates rolling the given number of dice until they all come up the same (above 10 crashes the bot).",
-    "%progressbar <name>,<start percent>,<note>": "Creates a progress bar with the given properties.",
-    "%progressbaredit <name>,<new percent>,<new note>": "Edits the given progress bar to have the given properties.",
-    "%rolecount": "Tells you how many roles you have."
+    "info": "Bot gives brief explanation of its designed purpose.",
+    "commands": "Links to this always-updating hastebin.",
+    "xofakind <number of dice>": "Simulates rolling the given number of dice until they all come up the same (above 10 crashes the bot).",
+    "progressbar <name>,<start percent>,<note>": "Creates a progress bar with the given properties.",
+    "progressbaredit <name>,<new percent>,<new note>": "Edits the given progress bar to have the given properties.",
+    "rolecount": "Tells you how many roles you have.",
+    "username": "Sends your tag",
+    "avatarURL": "Sends a link to your Discord avatar as saved by Discord"
+    ""
 }

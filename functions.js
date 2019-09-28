@@ -26,29 +26,7 @@ Please list the description and possible arguments in ./command-manuals.json
 */
 
 function is_allowed(restrictions, message) {
-  /*
-  Restrictions format
-  object
-  |
-  --- servers
-  |   |
-  |   --- blacklist
-  |   |
-  |   --- whitelist
-  |
-  --- channels
-  |   |
-  |   --- blacklist
-  |   |
-  |   --- whitelist
-  |
-  --- users
-  |   |
-  |   --- blacklist
-  |   |
-  |   --- whitelist
-
-  */
+  // Process restrictions
   if (restrictions) {
     var is_allowed = true;
     var server_id = String(message.guild.id);
@@ -215,7 +193,9 @@ function function_parser(message, client, Discord) {
     }},
     "info": {"function": function(message, client, Discord) {
       // Syntax: %info
+      var config = require("./config.json")
       message.channel.send("TigerDyno is an in-development project that will have many useful built-in commands and be easily customizable.")
+      message.channel.send("Use " + config.prefix + "commands for a list of commands and their uses.")
     }},
     "rolecount": {"function": function(message, client, Discord) {
       // Syntax: %rolecount
@@ -237,8 +217,11 @@ function function_parser(message, client, Discord) {
       // Syntax: %username
       message.channel.send(message.author.username)
     }},
-    "postlogs": {"function": function(message, client, Discord) {
-      'In development';
+    "commands": {"function": function(message, client, Discord) {
+      var cmd_manual_txt = require("./command-manual-uploader.js")()
+      tiger.uploadToHastebin(cmd_manual_txt, function(url) {
+        message.channel.send("Command manual here: " + url)
+      })
     }}
   }
 
