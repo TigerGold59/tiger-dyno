@@ -7,12 +7,12 @@
     "discord"
   ],
   "scripts": {
-     "start": "node tigers-sceptile.js"
+    "start": "node main.js"
   },
   "author": "tigergold59",
   "license": "MIT",
   "dependencies": {
     "discord.js": "11.5.1",
-    "tiger-script": "1.0.2"
+    "tiger-script": "1.0.6"
   }
 }
