@@ -10,6 +10,22 @@ Then, download the latest version of node.js and NPM, and (in this cloned folder
 
 Finally, run `node main.js` in this cloned folder. Your bot should be online, as long as your forked code works.
 
+### 'restrictions' object format
+restrictions: an object that qualifies whether or not an action can be performed (running a command, for example) based on the server, channel, and user that's using it. The restrictions object can contain three other objects: 'servers', 'channels', and 'users'. Each one can have a property 'blacklist and 'whitelist', which should map to the value of an array with not allowed and allowed (respectively) IDs. If the property blacklist has an entry in the array, all other servers will be allowed besides the entries, and vice versa for whitelist. If **both** have an entry in the array, restrictions for that category will all be removed and all will be whitelisted. Example:
+```
+{
+  "restrictions": {
+    "users": {
+      "blacklist": ["<not allowed user ID>"]
+    },
+    "channels": {
+      "whitelist: [<allowed channel IDs>]
+    }
+}
+```
+**NOTE: All IDs of blacklisted and whitelisted servers/channels/users MUST be surrounded by quotes (I.E. be strings)**
+This will allow anyone in the whitelisted channels to use the command, as long as they are not the blacklisted user.
+**NOTE #2: Even if the restriction is indirect (ex. not being listed on a whitelist), if any of the restrictions for servers/channels/users disqualifies the command from being used, even whitelisted servers/channels/users will not be able to use the command.**
 ## How to add modules
 In the modules folder, add a folder with the name of your module. Then add a script to that folder called `main.js`. The script's `module.exports` should be an object with properties 'restrictions', 'functions', and 'cmd_manual'.
 
