@@ -3,4 +3,7 @@ node_modules/
 token.json
 logs/*
 modules/*
+!modules/example
 package-lock.json
+events/*
+!events/messageDeleteExample.js

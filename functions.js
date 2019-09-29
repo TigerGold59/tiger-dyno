@@ -26,6 +26,7 @@ Please list the description and possible arguments in ./command-manuals.json
 */
 
 function is_allowed(restrictions, message) {
+  const config = require('./config.json')
   // Process restrictions
   if (restrictions) {
     var is_allowed = true;
@@ -37,7 +38,7 @@ function is_allowed(restrictions, message) {
     var users = restrictions["users"];
     if (servers) {
       if (servers.blacklist && servers.whitelist) {
-        console.log("Invalid restrictions: servers has a whitelist and blacklist.")
+        tiger.log("magenta", "Invalid restrictions: servers has a whitelist and blacklist.")
       }
       else if (servers.whitelist) {
         if (!servers.whitelist.includes(server_id)) {
@@ -52,7 +53,7 @@ function is_allowed(restrictions, message) {
     }
     if (is_allowed === true && channels) {
       if (channels.blacklist && channels.whitelist) {
-        console.log("Invalid restrictions: channels has a whitelist and blacklist.")
+        tiger.log("magenta", "Invalid restrictions: channels has a whitelist and blacklist.")
       }
       else if (channels.whitelist) {
         if (!channels.whitelist.includes(channel_id)) {
@@ -67,7 +68,7 @@ function is_allowed(restrictions, message) {
     }
     if (is_allowed === true && users) {
       if (users.blacklist && users.whitelist) {
-        console.log("Invalid restrictions: users has a whitelist and blacklist.")
+        tiger.log("magenta", "Invalid restrictions: users has a whitelist and blacklist.")
       }
       else if (users.whitelist) {
         if (!users.whitelist.includes(user_id)) {
@@ -79,6 +80,10 @@ function is_allowed(restrictions, message) {
           is_allowed = false;
         }
       }
+    }
+    // Override all restrictions for admins
+    if (config.admins.includes(String(message.author.id))) {
+      var is_allowed = true;
     }
     return is_allowed;
   }
@@ -245,7 +250,7 @@ function function_parser(message, client, Discord) {
       else if (cmdobj["function"] && !(is_allowed(cmdobj["restrictions"], message))) {
         message.channel.send("This command is restricted here.")
         var is_module_cmd = true;
-        tiger.log("yellow", prefix + command + " was attempted and is restricted (" + message.id + ")")
+        tiger.log("magenta", prefix + command + " was attempted and is restricted (" + message.id + ")")
       }
     }
     else {
@@ -269,10 +274,10 @@ function function_parser(message, client, Discord) {
     else if (module_obj["functions"][cmdname] && !(is_allowed(module_obj["restrictions"], message))) {
       message.channel.send("This command is restricted here.")
       is_module_cmd = true;
-      tiger.log("yellow", "[Module " + modules[i] + "] " + prefix + command + " was attempted and is restricted (" + message.id + ")")
+      tiger.log("magenta", "[Module " + modules[i] + "] " + prefix + command + " was attempted and is restricted (" + message.id + ")")
     }
     if (is_module_cmd === false) {
-      message.channel.send("Sorry, that is not a recognized command. Please use " + prefix + "help for a list of commands.")
+      message.channel.send("Sorry, that is not a recognized command. Please use " + prefix + "commands for a list of commands.")
       tiger.log("red", prefix + command + " is not a command (" + message.id + ")")
     }
   }
