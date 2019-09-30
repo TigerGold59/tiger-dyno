@@ -13,6 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "discord.js": "11.5.1",
-    "tiger-script": "1.0.6"
+    "tiger-script": "1.0.8",
+    "keyv": "3.1.0",
+    "@keyv/sqlite": "2.0.1"
   }
 }

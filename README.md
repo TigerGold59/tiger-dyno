@@ -2,7 +2,7 @@
  Flexible bot for Discord, easily customizable and functional
 ## How to use
 **For if you are going to fork this bot, do NOT
-run this exact code as a separate bot**
+run this exact code as a separate bot, just DM me on Discord @ TigerGold59#8729 and I will let you invite it to your server**
 
 Go to [Discord dev portal](https.discordapp.com/developers/applications/) and create your application. Then, go to the 'Bot' tab and add a bot user. Click to reveal your token.
 

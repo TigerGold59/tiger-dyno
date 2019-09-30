@@ -1,5 +1,5 @@
 'use strict';
-function get_text() {
+function get_text(guild_id) {
   const config = require("./config.json")
 
   // Get all modules
@@ -18,10 +18,11 @@ function get_text() {
     module_manuals = module_manuals.pop()
   }
   // Construct text buffer based on that one object
-  var text_buffer = "TigerDyno Command List\r\n======================\r\n\r\n"
+  var text_buffer = "TigerDyno Command List\r\n======================\r\n\r\nGlobal Prefix: % (use individual server prefix on that server)\r\n\r\n"
   var names = Object.keys(manuals_object)
+  var prefix = config.global_prefix
   for (var i = 0; i < names.length; i++) {
-    text_buffer += config.prefix + names[i] + ": "
+    text_buffer += prefix + names[i] + ": "
     text_buffer += manuals_object[names[i]] + "\r\n"
   }
   return text_buffer;

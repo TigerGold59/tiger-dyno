@@ -25,6 +25,16 @@ Please list the description and possible arguments in ./command-manuals.json
 
 */
 
+async function getPrefix(id, database) {
+  var guild_prefix = await database.get(String(id))
+  if (guild_prefix) {
+    return guild_prefix;
+  }
+  else {
+    return require('./config.json').global_prefix;
+  }
+}
+
 function is_allowed(restrictions, message) {
   const config = require('./config.json')
   // Process restrictions
@@ -92,7 +102,7 @@ function is_allowed(restrictions, message) {
   }
 }
 
-function function_parser(message, client, Discord) {
+async function function_parser(message, client, Discord) {
 
   const tiger = require("tiger-script")
 
@@ -169,38 +179,15 @@ function function_parser(message, client, Discord) {
       message.channel.send(createBar(startingpercent, note))
         .then(message => tiger.addJSON("./progressbars.json", name, message.id))
     }},
-    "progressbaredit": {"function": function(message, client, Discord) {
-      // Syntax: %proressbaredit <name,<new percent>,<note>
-      function createBar(percent, note) {
-        var buffer = "[~"
-        var lbuffer = ""
-        var spacebuffer = ""
-        for (var i = 0; i < percent; i++) {
-          lbuffer += "l"
-        }
-        for (var i = 0; i < (100 - percent); i++) {
-          spacebuffer += ":"
-        }
-        buffer += (lbuffer + spacebuffer + "~] (" + percent + "%), note: " + note)
-        return buffer;
-      }
-      var parts = message.content.split(' ')
-      parts.shift()
-      parts = parts.join("")
-      parts = parts.split(",")
-      var name = parts[0]
-      var percent = parts[1]
-      var note = parts[2]
-      var progressbar = createBar(percent, note)
-      var messageID = String(require("./progressbars.json")[name])
-      message.channel.fetchMessage(messageID).then(bar => bar.edit(progressbar))
-      console.log("Progress bar edited successfully")
-    }},
     "info": {"function": function(message, client, Discord) {
       // Syntax: %info
       var config = require("./config.json")
-      message.channel.send("TigerDyno is an in-development project that will have many useful built-in commands and be easily customizable.")
-      message.channel.send("Use " + config.prefix + "commands for a list of commands and their uses.")
+      var kv = require("keyv")
+      var db = new kv("sqlite://prefixes.db")
+      getPrefix(message.guild.id, db).then(prefix => {
+        message.channel.send("TigerDyno is an in-development project that will have many useful built-in commands and be easily customizable.")
+        message.channel.send("Use " + prefix + "commands for a list of commands and their uses.")
+      })
     }},
     "rolecount": {"function": function(message, client, Discord) {
       // Syntax: %rolecount
@@ -223,10 +210,38 @@ function function_parser(message, client, Discord) {
       message.channel.send(message.author.username)
     }},
     "commands": {"function": function(message, client, Discord) {
-      var cmd_manual_txt = require("./command-manual-uploader.js")()
+      var cmd_manual_txt = require("./command-manual-uploader.js")(message.guild.id)
+      console.log(cmd_manual_txt)
       tiger.uploadToHastebin(cmd_manual_txt, function(url) {
         message.channel.send("Command manual here: " + url)
       })
+    }},
+    "prefix": {"function": function(message, client, Discord) {
+      var kv = require("keyv")
+      var db = new kv("sqlite://prefixes.db")
+      var args = message.content.split(" ")
+      if (args.length === 1) {
+        getPrefix(String(message.guild.id), db).then(prefix => {
+          message.channel.send("Prefix for " + message.guild.name +  " is " + prefix + ".");
+        })
+      }
+      else if (args.length === 2) {
+        if (!(["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "?", ".", "-", "+", "=", ":"].includes(args[1]))) {
+          getPrefix(String(message.guild.id), db).then((prefix) => {
+            message.channel.send("Incorrect formatting. Correct usage is either \"" + prefix + "prefix\" for getting the prefix of this server, or \"" + prefix + "prefix <char>\" for setting the prefix of this server.")
+          })
+        }
+        else {
+          db.set(String(message.guild.id), args[1]).then(() => {
+            message.channel.send("Set prefix for " + message.guild.name + " to " + args[1] + ".")
+          })
+        }
+      }
+      else {
+        getPrefix(String(message.guild.id), db).then((prefix) => {
+          message.channel.send("Incorrect formatting. Correct usage is either \"" + prefix + "prefix\" for getting the prefix of this server, or \"" + prefix + "prefix <char>\" for setting the prefix of this server.")
+        })
+      }
     }}
   }
 
@@ -235,8 +250,10 @@ function function_parser(message, client, Discord) {
   const fs = require("fs")
   const read = fs.readFile
   const config = require("./config.json")
+  var kv = require("keyv")
+  var db = new kv("sqlite://prefixes.db")
 
-  var prefix = config.prefix
+  var prefix = await getPrefix(message.guild.id, db)
   if (message.content.indexOf(prefix) === 0) {
     var command = message.content.split(prefix)[1]
     var cmdname = command.split(" ")[0]
@@ -244,7 +261,7 @@ function function_parser(message, client, Discord) {
     if (cmdobj) {
       if (cmdobj["function"] && is_allowed(cmdobj["restrictions"], message)) {
         commands[cmdname]["function"](message, client, Discord)
-        tiger.log("green", prefix + command + " executed (" + message.id + ")")
+        tiger.log("green", "\"" + prefix + command + "\" executed (" + message.id + ")")
         var is_module_cmd = true;
       }
       else if (cmdobj["function"] && !(is_allowed(cmdobj["restrictions"], message))) {
@@ -267,7 +284,7 @@ function function_parser(message, client, Discord) {
     let keys = Object.keys(module_obj["functions"])
     // Check if the command run was a command from this active module
     if (module_obj["functions"][cmdname] && is_allowed(module_obj["restrictions"], message)) {
-      tiger.log("green", "[Module " + modules[i] + "] " + prefix + command + " executed (" + message.id + ")")
+      tiger.log("green", "[Module " + modules[i] + "] \"" + prefix + command + "\" executed (" + message.id + ")")
       module_obj["functions"][cmdname](message, client, Discord);
       is_module_cmd = true;
     }
