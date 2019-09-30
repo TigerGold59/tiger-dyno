@@ -183,7 +183,7 @@ async function function_parser(message, client, Discord) {
       // Syntax: %info
       var config = require("./config.json")
       var kv = require("keyv")
-      var db = new kv("sqlite://prefixes.db")
+      var db = new kv("sqlite://database.sqlite", {"namespace": "prefixes"})
       getPrefix(message.guild.id, db).then(prefix => {
         message.channel.send("TigerDyno is an in-development project that will have many useful built-in commands and be easily customizable.")
         message.channel.send("Use " + prefix + "commands for a list of commands and their uses.")
@@ -218,7 +218,7 @@ async function function_parser(message, client, Discord) {
     }},
     "prefix": {"function": function(message, client, Discord) {
       var kv = require("keyv")
-      var db = new kv("sqlite://prefixes.db")
+      var db = new kv("sqlite://database.sqlite", {"namespace": "prefixes"})
       var args = message.content.split(" ")
       if (args.length === 1) {
         getPrefix(String(message.guild.id), db).then(prefix => {
@@ -251,7 +251,7 @@ async function function_parser(message, client, Discord) {
   const read = fs.readFile
   const config = require("./config.json")
   var kv = require("keyv")
-  var db = new kv("sqlite://prefixes.db")
+  var db = new kv("sqlite://database.sqlite", {"namespace": "prefixes"})
 
   var prefix = await getPrefix(message.guild.id, db)
   if (message.content.indexOf(prefix) === 0) {

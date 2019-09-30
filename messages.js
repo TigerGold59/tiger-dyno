@@ -10,7 +10,7 @@ function processMessage(message, client, Discord) {
   // Process other information here like DMs, or mentions.
   if (message.content.includes("@TigerDyno#3832") || message.content.includes("<@626223136047628308>")) {
     let kv = require("keyv")
-    let db = new kv("sqlite://prefixes.db")
+    let db = new kv("sqlite://database.sqlite", {"namespace": "prefixes"})
     let getPrefix = async function(id, database) {
       var guild_prefix = await database.get(String(id))
       if (guild_prefix) {
