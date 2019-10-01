@@ -7,7 +7,7 @@ const module_obj = {
   },
   "functions": {
     "example": function(message, client, Discord) {
-      message.channel.send("This is an example bot function/command")
+      message.channel.send("This is an example bot function/command");
     }
 }
 module.exports = module_obj;

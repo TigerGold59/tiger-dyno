@@ -5,11 +5,11 @@ By default this bot should use [keyv](https://github.com/lukechilds/keyv) and sq
 Documentation: [keyv](https://github.com/lukechilds/keyv/blob/master/README.md)
 First, create a database file at `example/example.db` by using `sqlite3 /this-cloned-folder/example/example.db`, then in the shell type `select 1;`, then finally `.exit`.
 ```
-const kv = require("keyv")
-var database = new kv("sqlite://example/example.db")
+const kv = require("keyv");
+var database = new kv("sqlite://example/example.db");
 database.set("kvcool", "true").then(() => {
   database.get("kvcool").then(value => {
-    console.log(value)
+    console.log(value);
   })
 })
 ```

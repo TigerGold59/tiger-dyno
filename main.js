@@ -1,8 +1,8 @@
 'use strict';
-const tiger = require("tiger-script")
-const fs = require("fs")
-const chalk = require("chalk")
-const config = require("./config.json")
+const tiger = require("tiger-script");
+const fs = require("fs");
+const chalk = require("chalk");
+const config = require("./config.json");
 
 // Import the discord.js module
 const Discord = require('discord.js');
@@ -10,7 +10,7 @@ const Discord = require('discord.js');
 // Create an instance of a Discord client
 const client = new Discord.Client();
 
-tiger.log("none", chalk.bold.cyan("Client created, initializing bot"))
+tiger.log("none", chalk.bold.cyan("Client created, initializing bot"));
 // The token of your bot - https://discordapp.com/developers/applications/me
 // Please create a file called token.txt in the main folder and
 // the only contents of the file the token string.
@@ -21,20 +21,20 @@ client.on('ready', () => {
   client.removeListener('ready', function(){}); // Don't waste memory listening for a second login
 });
 // Parse message
-var parse_messages = require("./messages.js")
+var parse_messages = require("./messages.js");
 
-tiger.log("none", chalk.cyan("Loading modules..."))
+tiger.log("none", chalk.cyan("Loading modules..."));
 
 // Message listener
 client.on('message', message => {
-    parse_messages(message, client, Discord)
+    parse_messages(message, client, Discord);
 });
 
 // Listen and use files for each event
 for (var i = 0; i < config.event_listeners.length; i++) {
   // Call module.exports from each file which constructs a listening function
-  let listener = require("./events/" + config.event_listeners[i] + ".js")(client)
-  client.on(config.event_listeners[i], listener)
+  let listener = require("./events/" + config.event_listeners[i] + ".js")(client);
+  client.on(config.event_listeners[i], listener);
 }
 
 // Log the bot in
