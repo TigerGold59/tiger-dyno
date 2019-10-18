@@ -211,7 +211,6 @@ async function function_parser(message, client, Discord) {
     }},
     "commands": {"function": function(message, client, Discord) {
       var cmd_manual_txt = require("./command-manual-uploader.js")(message.guild.id);
-      console.log(cmd_manual_txt);
       tiger.uploadToHastebin(cmd_manual_txt, function(url) {
         message.channel.send("Command manual here: " + url);
       })
