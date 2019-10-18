@@ -281,11 +281,14 @@ async function function_parser(message, client, Discord) {
     // Get each individual module file and check function
     let active_module_path = "./modules/" + modules[i] + "/main.js";
     let module_obj = require(active_module_path);
+    if (!module_obj) {
+      continue;
+    }
     let keys = Object.keys(module_obj["functions"]);
     // Check if the command run was a command from this active module
     if (module_obj["functions"][cmdname] && is_allowed(module_obj["restrictions"], message)) {
       tiger.log("green", "[Module " + modules[i] + "] \"" + prefix + command + "\" executed (" + message.id + ")");
-      module_obj["functions"][cmdname](message, client, Discord);
+      module_obj["functions"][cmdname](message, client, Discord, prefix);
       is_module_cmd = true;
     }
     else if (module_obj["functions"][cmdname] && !(is_allowed(module_obj["restrictions"], message))) {

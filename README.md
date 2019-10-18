@@ -33,7 +33,7 @@ In `config.json`, there is a property called `admins`. If the `message.author.id
 ## How to add modules
 In the modules folder, add a folder with the name of your module. Then add a script to that folder called `main.js`. The script's `module.exports` should be an object with properties 'restrictions', 'functions', and 'cmd_manual'.
 
-Functions should be an object with the command name as the key and the function that executes when run as the value (arguments: message, client, Discord).
+Functions should be an object with the command name as the key and the function that executes when run as the value (arguments: message, client, Discord, prefix). The prefix will be passed to the command function upon execution.
 
 Restrictions should follow the normal format for a restrictions list (in comment at the top of `functions.js`).
 

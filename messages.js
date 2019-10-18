@@ -21,7 +21,7 @@ function processMessage(message, client, Discord) {
       }
     }
     getPrefix(message.guild.id, db).then(prefix => {
-       message.channel.send("This is TigerDyno, a WIP bot developed by TigerGold59#8729. Use " + prefix + "info for a more complete description.");
+       message.channel.send("This is TigerDyno, a WIP bot developed by TigerGold59#8729. Use " + prefix + "info (on this server, global prefix is " + require("./config.json").global_prefix + ") for a more complete description.");
     })
   }
 }
