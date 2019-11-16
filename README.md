@@ -6,7 +6,11 @@ run this exact code as a separate bot, just DM me on Discord @ TigerGold59#8729 
 
 Go to [Discord dev portal](https.discordapp.com/developers/applications/) and create your application. Then, go to the 'Bot' tab and add a bot user. Click to reveal your token.
 
-Then, download the latest version of node.js and NPM, and (in this cloned folder) run `npm install`. Once that is done, create a file in this folder called  `token.json` and put the only contents of the file as the JSON for an object with the property token that is a string that contains your token.
+Then, download the latest version of node.js and NPM, and (in this cloned folder) run `npm install`. Once that is done, create a file in this folder called  `token.json` and put the only contents of the file as the JSON for an object with the property token that is a string that contains your token, like this:
+```
+{"token": "<your-token-here"}
+```
+If your version of the bot still uses command manuals, you will need to create a file in the main directory called `pastebin-dev-token.json` that contains the token to your pastebin account API. Use the same formatting as above, however obviously make the token your pastebin dev token.
 
 Finally, run `node main.js` in this cloned folder. Your bot should be online, as long as your forked code works.
 
