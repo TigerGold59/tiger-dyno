@@ -30,10 +30,11 @@ client.on('message', message => {
     parse_messages(message, client, Discord);
 });
 
-// Listen and use files for each event
+// Listen and use files for each event, listed in config
 for (var i = 0; i < config.event_listeners.length; i++) {
   // Call module.exports from each file which constructs a listening function
   let listener = require("./events/" + config.event_listeners[i] + ".js")(client);
+  // Listen for each event with its listening function
   client.on(config.event_listeners[i], listener);
 }
 

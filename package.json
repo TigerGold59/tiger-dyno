@@ -12,9 +12,10 @@
   "author": "tigergold59",
   "license": "MIT",
   "dependencies": {
+    "@keyv/sqlite": "2.0.1",
     "discord.js": "11.5.1",
-    "tiger-script": "1.0.8",
     "keyv": "3.1.0",
-    "@keyv/sqlite": "2.0.1"
+    "pastebin-js": "^1.0.3",
+    "tiger-script": "1.0.8"
   }
 }
