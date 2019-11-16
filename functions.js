@@ -211,7 +211,7 @@ async function function_parser(message, client, Discord) {
     }},
     "commands": {"function": function(message, client, Discord) {
       var cmd_manual_txt = require("./command-manual-uploader.js")(message.guild.id);
-      const upload = require("./trickjump_pastebin.js")
+      const upload = require("./upload_to_pastebin.js")
       upload(cmd_manual_txt, function(url) {
         message.channel.send("Command manual here: " + "https://pastebin.com/raw/" + url);
       })
