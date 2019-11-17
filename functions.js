@@ -120,7 +120,7 @@ async function function_parser(message, client, Discord) {
       }
       else {
         if (num > 11 && message.author.id === '424564535030972426') {
-          message.channel.send("Warning: executive priviledge has overriden the argument restriction. This command may take hours to process and hang the rest of the bot. Please restart the bot if this was not intended.");
+          message.channel.send("Warning: executive privilege has overriden the argument restriction. This command may take hours to process and hang the rest of the bot. Please restart the bot if this was not intended.");
         }
       }
       var tries = 0;
