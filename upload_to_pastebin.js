@@ -1,8 +1,10 @@
 async function uploadToPastebin(text, callback) {
-  let pastebinAPI = require("pastebin-js")
-  let pastebin = new pastebinAPI(require("./pastebin-dev-token.json")['token'])
-  let data = await pastebin.createPaste(text)
+  let paste = require("paste.ee")
+  let posted = await paste(text, require("./paste-api-token.json")["token"])
   // Calls callback function with ID, NOT link
-  callback(data.split("https://pastebin.com/")[1]);
+  callback(posted.id);
 }
+uploadToPastebin("qwerty", data => {
+  console.log(data)
+})
 module.exports = uploadToPastebin;

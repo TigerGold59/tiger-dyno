@@ -213,7 +213,7 @@ async function function_parser(message, client, Discord) {
       var cmd_manual_txt = require("./command-manual-uploader.js")(message.guild.id);
       const upload = require("./upload_to_pastebin.js")
       upload(cmd_manual_txt, function(url) {
-        message.channel.send("Command manual here: " + "https://pastebin.com/raw/" + url);
+        message.channel.send("Command manual here: " + "https://paste.ee/r/" + url);
       })
     }},
     "prefix": {"function": function(message, client, Discord) {

@@ -10,7 +10,7 @@ Then, download the latest version of node.js and NPM, and (in this cloned folder
 ```
 {"token": "<your-token-here"}
 ```
-If your version of the bot still uses command manuals, you will need to create a file in the main directory called `pastebin-dev-token.json` that contains the token to your pastebin account API. Use the same formatting as above, however obviously make the token your pastebin dev token.
+If your version of the bot still uses command manuals, you will need to create a file in the main directory called `paste-api-token.json` that contains the token to your paste.ee account API. Use the same formatting as above, however obviously make the token your paste.ee API token.
 
 Finally, run `node main.js` in this cloned folder. Your bot should be online, as long as your forked code works.
 
