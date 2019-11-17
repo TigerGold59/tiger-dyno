@@ -8,4 +8,4 @@ package-lock.json
 events/*
 !events/messageDeleteExample.js
 db/*
-pastebin-dev-token.json
+paste-api-token.json
