@@ -16,6 +16,6 @@
     "discord.js": "11.5.1",
     "keyv": "3.1.0",
     "paste.ee": "^1.0.1",
-    "tiger-script": "1.0.8"
+    "tiger-script": "^1.1.0"
   }
 }
