@@ -19,6 +19,7 @@ const token = require("./token.json")['token'];
 client.on('ready', () => {
   tiger.log('green', `TigerDyno - Ready! Logged in as ${client.user.tag}.`);
   client.removeListener('ready', function(){}); // Don't waste memory listening for a second login
+  client.user.setPresence({"game": {"name": "@ for server prefix"}})
 });
 // Parse message
 var parse_messages = require("./messages.js");
