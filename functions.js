@@ -25,7 +25,11 @@ Please list the description and possible arguments in ./command-manuals.json
 
 */
 
-async function getPrefix(id, database) {
+async function getPrefix(guild, database) {
+  if (guild === null) {
+    return require('./config.json').global_prefix;
+  }
+  var id = guild.id;
   var guild_prefix = await database.get(String(id));
   if (guild_prefix) {
     return guild_prefix;
@@ -184,7 +188,7 @@ async function function_parser(message, client, Discord) {
       var config = require("./config.json");
       var kv = require("keyv");
       var db = new kv("sqlite://database.sqlite", {"namespace": "prefixes"});
-      getPrefix(message.guild.id, db).then(prefix => {
+      getPrefix(message.guild, db).then(prefix => {
         message.channel.send("TigerDyno is an in-development project that will have many useful built-in commands and be easily customizable.");
         message.channel.send("Use " + prefix + "commands for a list of commands and their uses.");
       })
@@ -221,13 +225,13 @@ async function function_parser(message, client, Discord) {
       var db = new kv("sqlite://database.sqlite", {"namespace": "prefixes"});
       var args = message.content.split(" ");
       if (args.length === 1) {
-        getPrefix(String(message.guild.id), db).then(prefix => {
+        getPrefix(message.guild, db).then(prefix => {
           message.channel.send("Prefix for " + message.guild.name +  " is " + prefix + ".");
         })
       }
       else if (args.length === 2) {
         if (!(["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "?", ".", "-", "+", "=", ":"].includes(args[1]))) {
-          getPrefix(String(message.guild.id), db).then((prefix) => {
+          getPrefix(message.guild, db).then((prefix) => {
             message.channel.send("Incorrect formatting. Correct usage is either \"" + prefix + "prefix\" for getting the prefix of this server, or \"" + prefix + "prefix <char>\" for setting the prefix of this server.");
           })
         }
@@ -238,7 +242,7 @@ async function function_parser(message, client, Discord) {
         }
       }
       else {
-        getPrefix(String(message.guild.id), db).then((prefix) => {
+        getPrefix(message.guild, db).then((prefix) => {
           message.channel.send("Incorrect formatting. Correct usage is either \"" + prefix + "prefix\" for getting the prefix of this server, or \"" + prefix + "prefix <char>\" for setting the prefix of this server.");
         })
       }
@@ -253,7 +257,7 @@ async function function_parser(message, client, Discord) {
   var kv = require("keyv");
   var db = new kv("sqlite://database.sqlite", {"namespace": "prefixes"});
 
-  var prefix = await getPrefix(message.guild.id, db);
+  var prefix = await getPrefix(message.guild, db);
   if (message.content.indexOf(prefix) === 0) {
     var command = message.content.split(prefix)[1];
     var cmdname = command.split(" ")[0];

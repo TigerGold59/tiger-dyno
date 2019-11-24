@@ -20,9 +20,14 @@ function processMessage(message, client, Discord) {
         return require('./config.json').global_prefix;
       }
     }
-    getPrefix(message.guild.id, db).then(prefix => {
-       message.channel.send("This is TigerDyno, a WIP bot developed by TigerGold59#8729. Use " + prefix + "info (on this server, global prefix is " + require("./config.json").global_prefix + ") for a more complete description.");
-    })
+    if (message.guild !== null) { // If the channel isn't a DM
+      getPrefix(message.guild, db).then(prefix => {
+         message.channel.send("This is TigerDyno, a WIP bot developed by TigerGold59#8729. Use " + prefix + "info (on this server, global prefix is " + require("./config.json").global_prefix + ") for a more complete description.");
+      })
+    }
+    else {
+      message.channel.send("This is TigerDyno, a WIP bot developed by TigerGold59#8729. Use " + require("./config.json").global_prefix + "info for a more complete description, and mention me on a server for my prefix..");
+    }
   }
 }
 module.exports = processMessage
