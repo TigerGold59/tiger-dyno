@@ -230,6 +230,9 @@ async function function_parser(message, client, Discord) {
         })
       }
       else if (args.length === 2) {
+        if (require("./config.json").admins.includes(String(message.author.id)) === false) {
+          return message.channel.send("You must be a bot admin to change the prefix here.")
+        }
         if (!(["~", "`", "!", "@", "#", "$", "%", "^", "&", "*", "?", ".", "-", "+", "=", ":"].includes(args[1]))) {
           getPrefix(message.guild, db).then((prefix) => {
             message.channel.send("Incorrect formatting. Correct usage is either \"" + prefix + "prefix\" for getting the prefix of this server, or \"" + prefix + "prefix <char>\" for setting the prefix of this server.");
