@@ -45,3 +45,7 @@ client.login(token);
 process.on("unhandledRejection", error => {
     console.error("Unhandled promise rejection: ", error);
 });
+
+process.on("disconnect", () = {
+  process.exit()
+})
