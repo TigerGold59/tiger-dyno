@@ -31,6 +31,21 @@ client.on('message', message => {
     parse_messages(message, client, Discord);
 });
 
+client.on("shardError", () => {
+  tiger.log("purple", "Restarting due to a WebSocket connection hiccup.")
+  process.exit(0);
+});
+
+client.on("shardDisconnect", () => {
+  tiger.log("purple", "Restarting due to a WebSocket connection hiccup.")
+  process.exit(0);
+});
+
+client.on("shardReconnecting", () => {
+  tiger.log("purple", "Restarting due to a WebSocket connection hiccup.")
+  process.exit(0);
+});
+
 // Listen and use files for each event, listed in config
 for (var i = 0; i < config.event_listeners.length; i++) {
   // Call module.exports from each file which constructs a listening function
