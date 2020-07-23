@@ -15,7 +15,11 @@
     "@keyv/sqlite": "2.0.1",
     "discord.js": "11.5.1",
     "keyv": "3.1.0",
-    "paste.ee": "^1.0.1",
-    "tiger-script": "^1.1.0"
+    "paste.ee": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/keyv": "^3.1.1",
+    "@types/node": "^14.0.24"
   }
 }

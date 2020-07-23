@@ -6,6 +6,10 @@ modules/*
 !modules/example
 package-lock.json
 events/*
-!events/messageDeleteExample.js
+!events/messageDeleteExample.ts
 db/*
 paste-api-token.json
+*.js
+yarn-error.log
+yarn.lock
+paste_api_token.json
