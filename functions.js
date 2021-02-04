@@ -195,7 +195,7 @@ async function function_parser(message, client, Discord) {
     }},
     "rolecount": {"function": function(message, client, Discord) {
       // Syntax: %rolecount
-      var roles_array = message.guild.member(message.author).roles.array();
+      var roles_array = message.member.roles.cache.array();
       message.channel.send("Total roles for you: " + String((roles_array.length - 1)));
     }},
     /*"totalroles": function(message, client, Discord) {
