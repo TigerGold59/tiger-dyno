@@ -113,17 +113,17 @@ async function function_parser(message, client, Discord) {
   var commands = {
     "xofakind": {"function": function(message, client, Discord) {
       // Syntax: %xofakind <numberOfDice>
-      function dice() {
+      /*function dice() {
         return (Math.floor(Math.random() * 6) + 1);
       }
       var parts = message.content.split(' ');
       var num = Number(parts[1]);
-      if (num > 11 && !(message.author.id === '424564535030972426')) {
+      if (num > 11 && !(message.author.id === '657424536740036608')) {
         message.channel.send("Argument " + parts[1] + " is too high a number of dice, it would take hours for the bot to simulate this and millions of years to roll this yourself.");
         return;
       }
       else {
-        if (num > 11 && message.author.id === '424564535030972426') {
+        if (num > 11 && message.author.id === '657424536740036608') {
           message.channel.send("Warning: executive privilege has overriden the argument restriction. This command may take hours to process and hang the rest of the bot. Please restart the bot if this was not intended.");
         }
       }
@@ -156,7 +156,8 @@ async function function_parser(message, client, Discord) {
           diceNumbers = all;
         }
       }
-      message.channel.send("To roll " + num + " dice that all turn up as " + diceNumbers + " took " + (tries + 1) + " tries.");
+      message.channel.send("To roll " + num + " dice that all turn up as " + diceNumbers + " took " + (tries + 1) + " tries.");*/
+      message.channel.send("This command has been disabled indefinitely for bot stability reasons.");
     }},
     "progressbar": {"function": function(message, client, Discord) {
       // Syntax: %progressbar <name>,<starting percent>,<note>
@@ -195,7 +196,7 @@ async function function_parser(message, client, Discord) {
     }},
     "rolecount": {"function": function(message, client, Discord) {
       // Syntax: %rolecount
-      var roles_array = message.guild.member(message.author).roles.array();
+      var roles_array = message.member.roles.cache.array();
       message.channel.send("Total roles for you: " + String((roles_array.length - 1)));
     }},
     /*"totalroles": function(message, client, Discord) {

@@ -12,7 +12,7 @@
   "author": "tigergold59",
   "license": "MIT",
   "dependencies": {
-    "@keyv/sqlite": "2.0.1",
+    "@keyv/sqlite": "^2.0.1",
     "discord.js": "^12.5.1",
     "keyv": "3.1.0",
     "paste.ee": "^1.0.1",

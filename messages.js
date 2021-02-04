@@ -8,7 +8,7 @@ function processMessage(message, client, Discord) {
   functions(message, client, Discord);
 
   // Process other information here like DMs, or mentions.
-  if (message.mentions.users.has("626223136047628308")) {
+  if (message.mentions.users.has("755104563807256657")) {
     let kv = require("keyv");
     let db = new kv("sqlite://database.sqlite", {"namespace": "prefixes"});
     let getPrefix = async function(id, database) {
